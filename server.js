@@ -4,6 +4,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
+const productRoutes = require('./Routes/routes')
 
 // Initialize Express app
 const app = express();
@@ -11,6 +12,17 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware setup
 app.use(bodyParser.json());
+
+// Connect to MongoDB
+const mongoUri = 'mongodb://localhost:27017/productsdb';
+mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('Connected to MongoDB');
+}).catch(err => {
+    console.error('MongoDB connection error:', err);
+});
 
 // Sample in-memory products database
 let products = [
@@ -42,7 +54,7 @@ let products = [
 
 // Root route
 app.get('/', (req, res) => {
-  res.send('Welcome to the Product API! Go to /api/products to see all products.');
+  res.send('Hello World! Go to /api/products to see all products.');
 });
 
 // TODO: Implement the following routes:
@@ -53,9 +65,11 @@ app.get('/', (req, res) => {
 // DELETE /api/products/:id - Delete a product
 
 // Example route implementation for GET /api/products
-app.get('/api/products', (req, res) => {
-  res.json(products);
-});
+// app.get('/api/products', (req, res) => {
+//   res.json(products);
+// });
+//Product Routes
+app.use('/api', productRoutes);
 
 // TODO: Implement custom middleware for:
 // - Request logging
