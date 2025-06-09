@@ -1,10 +1,10 @@
-// server.js - Starter Express server for Week 2 assignment
-
 // Import required modules
 const express = require('express');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
 const productRoutes = require('./Routes/routes')
+
 
 // Initialize Express app
 const app = express();
@@ -64,10 +64,6 @@ app.get('/', (req, res) => {
 // PUT /api/products/:id - Update a product
 // DELETE /api/products/:id - Delete a product
 
-// Example route implementation for GET /api/products
-// app.get('/api/products', (req, res) => {
-//   res.json(products);
-// });
 //Product Routes
 app.use('/api', productRoutes);
 

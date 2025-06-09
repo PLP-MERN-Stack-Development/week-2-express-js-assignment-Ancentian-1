@@ -2,10 +2,10 @@
 
 const mongoose = require('mongoose');
 
-const Product = require('./../Models/product')
+const product = require('./Models/product')
 
 // Create model
-const Product = mongoose.model('Product', productSchema);
+const Product = mongoose.model('product', product);
 
 // Product data 
 let products = [

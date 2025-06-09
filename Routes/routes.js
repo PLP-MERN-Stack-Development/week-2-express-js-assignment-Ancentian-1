@@ -58,18 +58,20 @@ router.put('/products/:id', async(req, res) =>{
 })
 
 //Delete Product
-router.get('/products/:id', async(req, res) =>{
-    const _id = re.params.id
+router.delete('/products/:id', async (req, res) => {
+    const _id = req.params.id;
     try {
-        const product = await Product.findByIdAndDelete(_id)
-        if(!product){
-            return res.status(400).send(error)
+        const product = await Product.findByIdAndDelete(_id);
+        if (!product) {
+            return res.status(404).send({ error: "Product not found" });
         }
-        res.status(200).send(product)
+        console.log(product);
+        res.status(200).send(product);
     } catch (error) {
-        res.status(400).send(error)
+        res.status(400).send({ error: error.message });
     }
-})
+});
+
 
 
 
