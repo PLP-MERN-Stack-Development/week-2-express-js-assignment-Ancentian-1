@@ -1,9 +1,15 @@
 // Import required modules
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
 const productRoutes = require('./Routes/routes')
+
+const logger = require('./middleware/logger');
+const authMiddleware = require('./middleware/auth');
+const errorHandler = require('./middleware/errorHandler');
 
 
 // Initialize Express app
@@ -15,62 +21,24 @@ app.use(bodyParser.json());
 
 // Connect to MongoDB
 const mongoUri = 'mongodb://localhost:27017/productsdb';
-mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
-    console.log('Connected to MongoDB');
-}).catch(err => {
-    console.error('MongoDB connection error:', err);
-});
 
-// Sample in-memory products database
-let products = [
-  {
-    id: '1',
-    name: 'Laptop',
-    description: 'High-performance laptop with 16GB RAM',
-    price: 1200,
-    category: 'electronics',
-    inStock: true
-  },
-  {
-    id: '2',
-    name: 'Smartphone',
-    description: 'Latest model with 128GB storage',
-    price: 800,
-    category: 'electronics',
-    inStock: true
-  },
-  {
-    id: '3',
-    name: 'Coffee Maker',
-    description: 'Programmable coffee maker with timer',
-    price: 50,
-    category: 'kitchen',
-    inStock: false
-  }
-];
+mongoose.connect(mongoUri)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Connection error:', err));
 
-// Root route
+// Middleware
+app.use(logger);          
+app.use(express.json());  
+app.use(authMiddleware);  //Applies to all routes 
+
+//Routes
 app.get('/', (req, res) => {
-  res.send('Hello World! Go to /api/products to see all products.');
+  res.send('Hello World! Welcome to PLP!');
 });
 
-// TODO: Implement the following routes:
-// GET /api/products - Get all products
-// GET /api/products/:id - Get a specific product
-// POST /api/products - Create a new product
-// PUT /api/products/:id - Update a product
-// DELETE /api/products/:id - Delete a product
-
-//Product Routes
 app.use('/api', productRoutes);
 
-// TODO: Implement custom middleware for:
-// - Request logging
-// - Authentication
-// - Error handling
+app.use(errorHandler); // Error handler must be the LAST middleware
 
 // Start the server
 app.listen(PORT, () => {

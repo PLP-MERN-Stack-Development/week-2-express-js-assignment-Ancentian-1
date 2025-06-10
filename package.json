@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/PLP-MERN-Stack-Development/week-2-express-js-assignment-Ancentian-1#readme",
   "dependencies": {
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "express-validator": "^7.2.1",
     "mongoose": "^8.15.1",
     "nodemon": "^3.1.10",
     "uuid": "^11.1.0"

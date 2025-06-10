@@ -46,6 +46,10 @@ The API will have the following endpoints:
 - `POST /api/products`: Create a new product
 - `PUT /api/products/:id`: Update a product
 - `DELETE /api/products/:id`: Delete a product
+- `GET /api/products`: Get all products (with optional category filter & pagination)
+- `GET /api/products/search`: Search products by name
+- `GET /api/products/stats`: Get product count per category
+- `GET /api/products/:category`: Conflicts with :id, consider removing or changing to query
 
 ## Submission
 
